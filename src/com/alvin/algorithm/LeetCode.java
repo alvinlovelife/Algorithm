@@ -21,6 +21,60 @@ public class LeetCode {
     }
 
     /**
+     *  LeetCode(Array):
+     *  238. Product of Array Except Self
+     *  
+     */
+    public static int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] res = new int[n];
+        res[0] = 1;
+        for (int i = 1; i < n; i++) {
+            res[i] = res[i - 1] * nums[i - 1];
+        }
+        int right = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            res[i] *= right;
+            right *= nums[i];
+        }
+        return res;
+    }
+
+    /**
+     *  LeetCode(Array):
+     *  287. Find the Duplicate Number
+     *  二分查找，比较哪边的数比较多
+     */
+    public static int findDuplicate(int[] nums) {
+        int min = 0, max = nums.length - 1;
+        while(min <= max){
+            int mid = min + (max - min) / 2;
+            int count = 0;
+            // 计算数组中有count个数小于等于中间数
+            for(int i = 0; i < nums.length; i++){
+                if(nums[i] <= mid){
+                    count++;
+                }
+            }
+            // 如果count的数量大于中间数，说明前半部分必有重复，否则后半部分必有重复
+            if(count > mid){
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return min;
+        /*for(int i=0; i<nums.length; i++){
+            for(int j=0; j<nums.length; j++){
+                if(i!=j && nums[j]==nums[i]){
+                    return nums[j];
+                }
+            }
+        }
+        return 0;*/
+    }
+
+    /**
      *  Leetcode(Array)：
      *  442. Find All Duplicates in an Array
      *  理解：因为数组中保存的数字在1~N之间，不能使用额外的空间，
@@ -62,39 +116,7 @@ public class LeetCode {
         return list;
     }
 
-    /**
-     *  LeetCode(Array):
-     *  287. Find the Duplicate Number
-     *  二分查找，比较哪边的数比较多
-     */
-    public static int findDuplicate(int[] nums) {
-        int min = 0, max = nums.length - 1;
-        while(min <= max){
-            int mid = min + (max - min) / 2;
-            int count = 0;
-            // 计算数组中有count个数小于等于中间数
-            for(int i = 0; i < nums.length; i++){
-                if(nums[i] <= mid){
-                    count++;
-                }
-            }
-            // 如果count的数量大于中间数，说明前半部分必有重复，否则后半部分必有重复
-            if(count > mid){
-                max = mid - 1;
-            } else {
-                min = mid + 1;
-            }
-        }
-        return min;
-        /*for(int i=0; i<nums.length; i++){
-            for(int j=0; j<nums.length; j++){
-                if(i!=j && nums[j]==nums[i]){
-                    return nums[j];
-                }
-            }
-        }
-        return 0;*/
-    }
+    
 
     /**
      *  LeetCode(string):
@@ -104,7 +126,7 @@ public class LeetCode {
     public static boolean repeatedSubstringPattern(String str) {
         int length = str.length();
         for(int i = length / 2; i >= 1; i--) {
-            //ÄÜ±»Õû³ýµÄ±¶Êý£¬¶¼¿ÉÄÜÎªÖØ¸´´ÎÊý
+            //能被整除的倍数，都可能为重复次数
             if(length % i == 0) {
                 int num = length / i;
                 StringBuffer strbuffer = new StringBuffer();
@@ -120,7 +142,7 @@ public class LeetCode {
     /**
      *  LeetCode(string):
      *  434. Number of Segments in a String
-     *  Ö»ÒªÓÐ¿Õ¸ñ±ãÊÇ·Ö¸ô·û
+     *  只要有空格便是分隔符
      */
     public static int countSegments(String s) {
         int k=0;
